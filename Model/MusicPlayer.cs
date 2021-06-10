@@ -33,7 +33,7 @@ namespace NameThatMusic.Model
                 //возможно он захочет начать игру заново, выбрать другой жанр
                 //или закрыть игру
             }
-            //проигрывание музыки обределённый промежуток времени
+            //проигрывание музыки определённый промежуток времени
             CurrentMusic.wasPlayed = true;
             CurrentMusic = NextMusic();
         }
@@ -65,7 +65,7 @@ namespace NameThatMusic.Model
                 }
             }
             styleSelected = true;
-            CurrentMusic = CurrentPlayList[random.Next(0, CurrentPlayList.Count)];
+            CurrentMusic = NextMusic();
         }
         public void ResetMusicStyle()
         {
@@ -75,6 +75,11 @@ namespace NameThatMusic.Model
         }
         public Music GetRandomMusic()
         {
+            //проверяем вся-ли музыка была проиграна
+            if (AllMusicWasPlayed())
+            {
+                return null;
+            }
             //выбирает случайную следующую песню
             if (styleSelected == true)
             {
@@ -82,11 +87,6 @@ namespace NameThatMusic.Model
                 while (CurrentPlayList[randomNumberOfMusic].wasPlayed == true)
                 {
                     randomNumberOfMusic = random.Next(0, CurrentPlayList.Count);
-                    //проверяем вся-ли музыка была проиграна
-                    if (AllMusicWasPlayed())
-                    {
-                        return null;
-                    }
                 }
                 return CurrentPlayList[randomNumberOfMusic];
             }
@@ -96,28 +96,23 @@ namespace NameThatMusic.Model
                 while (PlayList[randomNumberOfMusic].wasPlayed == true)
                 {
                     randomNumberOfMusic = random.Next(0, PlayList.Count);
-                    //проверяем вся-ли музыка была проиграна
-                    if (AllMusicWasPlayed())
-                    {
-                        return null;
-                    }
                 }
                 return PlayList[randomNumberOfMusic];
             }
         }
         public Music GetNextMusic()
         {
+            //проверяем вся-ли музыка была проиграна
+            if (AllMusicWasPlayed())
+            {
+                return null;
+            }
             //выбирает следующую песню по порядку проигрывания и проверяет не превышает-ли индекс текущей песни размер коллекции
             if (styleSelected == true)
             {
                 while (CurrentPlayList[CurrentMusicIndex].wasPlayed == true && CurrentMusicIndex <= CurrentPlayList.Count - 1)
                 {
                     CurrentMusicIndex++;
-                }
-                //проверяем вся-ли музыка была проиграна
-                if (AllMusicWasPlayed())
-                {
-                    return null;
                 }
                 return CurrentPlayList[CurrentMusicIndex];
             }
@@ -126,11 +121,6 @@ namespace NameThatMusic.Model
                 while (PlayList[CurrentMusicIndex].wasPlayed == true && CurrentMusicIndex <= CurrentPlayList.Count - 1)
                 {
                     CurrentMusicIndex++;
-                }
-                //проверяем вся-ли музыка была проиграна
-                if (AllMusicWasPlayed())
-                {
-                    return null;
                 }
                 return PlayList[CurrentMusicIndex];
             }
