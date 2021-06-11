@@ -8,10 +8,10 @@ namespace NameThatMusic.Model
 {
     class Music
     {
-        public string Name { get; set; }
-        public string Artist { get; set; }
-        public string Path { get; set; }
-        public string MusicStyle { get; set; }
+        public string Name { get; private set; }
+        public string Artist { get; private set; }
+        public string Path { get; private set; }
+        public string MusicStyle { get; private set; }
         public bool wasPlayed { get; set; } = false;
         public Music(string _name, string _artist, string _path, string _musicStyle)
         {

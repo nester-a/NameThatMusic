@@ -9,13 +9,13 @@ namespace NameThatMusic.Model
 {
     class MusicPlayer
     {
-        public ObservableCollection<Music> PlayList { get; set; } = new ObservableCollection<Music>();
-        public ObservableCollection<Music> CurrentPlayList { get; set; } = new ObservableCollection<Music>();
-        public Music CurrentMusic { get; set; }
-        public int CurrentMusicIndex { get; set; } = 0;
-        public bool styleSelected { get; set; } = false;
-        public bool chooseRandomMusic { get; set; } = true;
-        public bool allMusicWasPlayed { get; set; } = false;
+        public ObservableCollection<Music> PlayList { get; private set; } = new ObservableCollection<Music>();
+        public ObservableCollection<Music> CurrentPlayList { get; private set; } = new ObservableCollection<Music>();
+        public Music CurrentMusic { get; private set; }
+        public int CurrentMusicIndex { get; private set; } = 0;
+        public bool styleSelected { get; private set; } = false;
+        public bool chooseRandomMusic { get; private set; } = true;
+        public bool allMusicWasPlayed { get; private set; } = false;
 
         static Random random = new Random();
 
