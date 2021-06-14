@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace NameThatMusic.Model
 {
@@ -16,30 +19,82 @@ namespace NameThatMusic.Model
         public bool styleSelected { get; private set; } = false;
         public bool chooseRandomMusic { get; private set; } = true;
         public bool allMusicWasPlayed { get; private set; } = false;
+        public SoundPlayer musicPlayer { get; private set; }
+        public Timer playingTimer { get; set; }
 
-        static Random random = new Random();
-
+        //конструктор
         public MusicPlayer(string _musicFolder)
         {
+            //ищем музыку в переданной в конструктор директории
+            string[] musicFiles = Directory.GetFiles(_musicFolder, "*.mp3");
+            for (int i = 0; i < musicFiles.Length; i++)
+            {
+                PlayList.Add(new Music(musicFiles[i]));
+
+                //теперь нужно каким-то образом задать песням название и определить их жанр
+                //скорее всего это всё будет делаться в настройках игры
+                //т.е. перед запуском игры, нужно будет просканировать директорию с музыкой
+                //затем отобразить список адресов песен
+                //и в ручную к каждом экземпляру добавить музыку и жанр
+            }
+
             //заполнение общего плэйлиста из директории
             CurrentMusic = NextMusic();
         }
 
-        public void Play(int _time)
+        //он нам нужен, чтобы ставить песни случайным образом
+        static Random random = new Random();
+
+        public void Play(int _seconds)
         {
+            //проверяем все-ли песни уже играли
             if(CurrentMusic == null && allMusicWasPlayed)
             {
                 //останавливаем игру, чтобы игрок выбрал что делать дальше
                 //возможно он захочет начать игру заново, выбрать другой жанр
                 //или закрыть игру
             }
-            //проигрывание музыки определённый промежуток времени
+
+            //если ещё есть песни, которые не проигрывались, то продолжаем играть
+            int time = _seconds * 1000;//переводим время в милисекунды
+            musicPlayer = new SoundPlayer(CurrentMusic.Path);
+            playingTimer = new Timer(time);
+
+            //если музыка загрузилась удачно, то начинаем её проигрывать
+            if(musicPlayer != null)
+            {
+                playingTimer.Start();
+                musicPlayer.Play();
+                //проигрывание музыки определённый промежуток времени
+                playingTimer.Elapsed += Timer_Elapsed;
+            }
+            else
+            {
+                //произошла ошибка
+            }
+        }
+
+        //событие - время проигрывания вышло
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            StopMusic();
+        }
+
+        public void StopMusic()
+        {
+            //останавливаем музыку
+            playingTimer.Stop();
+            playingTimer.Dispose();
+            musicPlayer.Stop();
+            musicPlayer.Dispose();
+
+            //показываем название композиции, которая играла, каким-нибудь образом
+            //
+            //
+
+            //переключаем песню на следующую
             CurrentMusic.wasPlayed = true;
             CurrentMusic = NextMusic();
-        }
-        public void Pause()
-        {
-            //ставим музыку на паузу
         }
         public Music NextMusic()
         {
