@@ -1,0 +1,80 @@
+﻿<Window x:Class="NameThatMusic.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NameThatMusic"
+        mc:Ignorable="d"
+        Title="Name That Song Host Window" Height="450" Width="800" x:Name="HostWindow">
+    <!--основная гряда-->
+    <Grid x:Name="gMainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/><!--здесь разместим меню-->
+            <RowDefinition/><!--здесь разместим игровое поле-->
+            <RowDefinition Height="100"/><!--здесь будет проигрываться музыка-->
+        </Grid.RowDefinitions>
+        <!--меню-->
+        <Menu Grid.Row="0" x:Name="menuMainMenu">
+            <MenuItem Header="File"/>
+            <MenuItem Header="Options"/>
+            <MenuItem Header="About"/>
+        </Menu>
+        <!--игровое поле-->
+        <Grid x:Name="gGameFieldGrid" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/><!--первый игрок-->
+                <ColumnDefinition/><!--второй игрок-->
+                <ColumnDefinition/><!--третий игрок-->
+                <ColumnDefinition/><!--четвёртый игрок-->
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/> <!--здесь будут аватарки игроков-->
+                <RowDefinition Height="40"/> <!--здесь будут очки игроков-->
+                <RowDefinition Height="40"/> <!--здесь будут кнопки добавить игрока-->
+                <RowDefinition Height="40"/> <!--здесь будут кнопки убрать игрока-->
+            </Grid.RowDefinitions>
+            <!--рисуем аватарки игоков-->
+            <StackPanel Grid.Row="0" Grid.Column="0" x:Name="spFirstPlayer" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Height="120" Background="DarkBlue"></StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="1" x:Name="spSecondPlayer" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Height="120" Background="DarkRed"></StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="2" x:Name="spThirdPlayer" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Height="120" Background="OrangeRed"></StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="3" x:Name="spFourthPlayer" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Height="120" Background="Black"></StackPanel>
+            <!---->
+            <!--рисуем очки-->
+            <StackPanel Grid.Row="1" Grid.Column="0" x:Name="spFirstPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Scores"/>
+                <TextBlock Text="0" Margin="0,5"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1" x:Name="spSecondPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Scores"/>
+                <TextBlock Text="0" Margin="0,5"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="2" x:Name="spThirdPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Scores"/>
+                <TextBlock Text="0" Margin="0,5"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="3" x:Name="spFourthPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="Scores"/>
+                <TextBlock Text="0" Margin="0,5"/>
+            </StackPanel>
+            <!---->
+            <!--рисуем кнопки добавить игрока-->
+            <Button Grid.Row="2" Grid.Column="0" x:Name="btnAddFirstPlayer" Content="Add player" Width="85" Height="25"/>
+            <Button Grid.Row="2" Grid.Column="1" x:Name="btnAddSecondPlayer" Content="Add player" Width="85" Height="25"/>
+            <Button Grid.Row="2" Grid.Column="2" x:Name="btnAddThirdPlayer" Content="Add player" Width="85" Height="25"/>
+            <Button Grid.Row="2" Grid.Column="3" x:Name="btnAddFourthPlayer" Content="Add player" Width="85" Height="25"/>
+            <!---->
+            <!--рисуем кнопки убрать игрока-->
+            <Button Grid.Row="3" Grid.Column="0" x:Name="btnRemoveFirstPlayer" Content="Remove player" Width="85" Height="25"/>
+            <Button Grid.Row="3" Grid.Column="1" x:Name="btnRemoveSecondPlayer" Content="Remove player" Width="85" Height="25"/>
+            <Button Grid.Row="3" Grid.Column="2" x:Name="btnRemoveThirdPlayer" Content="Remove player" Width="85" Height="25"/>
+            <Button Grid.Row="3" Grid.Column="3" x:Name="btnRemoveFourthPlayer" Content="Remove player" Width="85" Height="25"/>
+            <!---->
+        </Grid>
+        <!--музыкальный плеер-->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button x:Name="btnPlay" Content="PLAY!"/>
+            <Label x:Name="Timer" Content="TIMER" Margin="10,0,0,0"/>
+            <TextBlock x:Name="txtblckSongName" Text="Song Name" Margin="10,5,0,0" Width="150"/>
+        </StackPanel>
+    </Grid>
+</Window>

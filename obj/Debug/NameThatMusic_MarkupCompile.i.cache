@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\neste\source\repos\NameThatMusic\App.xaml
-11151548125
+2-2134885176
 
-101645088516
+11-1597964780
 131254293103
-MainWindow.xaml;
+View\MainWindow.xaml;View\PlayersWindow.xaml;
 
-False
+True
 
