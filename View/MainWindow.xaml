@@ -14,17 +14,23 @@
     <Grid x:Name="gMainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/><!--здесь разместим меню-->
+            <RowDefinition Height="50"/><!--здесь будут кнопки начала/конца игры-->
             <RowDefinition/><!--здесь разместим игровое поле-->
-            <RowDefinition Height="100"/><!--здесь будет проигрываться музыка-->
+            <RowDefinition Height="70"/><!--здесь будет проигрываться музыка-->
         </Grid.RowDefinitions>
         <!--меню-->
         <Menu Grid.Row="0" x:Name="menuMainMenu">
             <MenuItem Header="File"/>
-            <MenuItem Header="Options"/>
+            <MenuItem Header="Options" Command="{Binding ClickMenuButtonOptions}"/>
             <MenuItem Header="About"/>
         </Menu>
+        <!--кнопки начать/закончить игру-->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="Start Game" Height="20" Width="75" Margin="5,5,5,5" IsEnabled="{Binding Game.CanBeStarted}" Command="{Binding ClickStartGame}"/>
+            <Button Content="End Game" Height="20" Width="75" Margin="5,5,5,5" IsEnabled="{Binding Game.CanBeCanceled}" Command="{Binding ClickEndGame}"/>
+        </StackPanel>
         <!--игровое поле-->
-        <Grid x:Name="gGameFieldGrid" Grid.Row="1">
+        <Grid x:Name="gGameFieldGrid" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/><!--первый игрок-->
                 <ColumnDefinition/><!--второй игрок-->
@@ -83,9 +89,9 @@
             <!---->
         </Grid>
         <!--музыкальный плеер-->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button x:Name="btnPlay" Content="PLAY!"/>
-            <Label x:Name="Timer" Content="TIMER" Margin="10,0,0,0"/>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button x:Name="btnPlay" Content="PLAY!" IsEnabled="{Binding CanStartPlayMusic}"/>
+            <Label x:Name="Timer" Content="{Binding GameRoundTime, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0"/>
             <TextBlock x:Name="txtblckSongName" Text="Song Name" Margin="10,5,0,0" Width="150"/>
         </StackPanel>
     </Grid>

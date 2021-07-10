@@ -1,7 +1,6 @@
 C:\Users\neste\source\repos\NameThatMusic\bin\Debug\NameThatMusic.exe.config
 C:\Users\neste\source\repos\NameThatMusic\bin\Debug\NameThatMusic.exe
 C:\Users\neste\source\repos\NameThatMusic\bin\Debug\NameThatMusic.pdb
-C:\Users\neste\source\repos\NameThatMusic\obj\Debug\NameThatMusic.csprojAssemblyReference.cache
 C:\Users\neste\source\repos\NameThatMusic\obj\Debug\View\MainWindow.g.cs
 C:\Users\neste\source\repos\NameThatMusic\obj\Debug\App.g.cs
 C:\Users\neste\source\repos\NameThatMusic\obj\Debug\NameThatMusic_MarkupCompile.cache
@@ -16,3 +15,8 @@ C:\Users\neste\source\repos\NameThatMusic\obj\Debug\NameThatMusic.pdb
 C:\Users\neste\source\repos\NameThatMusic\obj\Debug\View\PlayersWindow.g.cs
 C:\Users\neste\source\repos\NameThatMusic\obj\Debug\View\PlayersWindow.baml
 C:\Users\neste\source\repos\NameThatMusic\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\neste\source\repos\NameThatMusic\bin\Debug\TagLib.Portable.dll
+C:\Users\neste\source\repos\NameThatMusic\obj\Debug\NameThatMusic.csprojAssemblyReference.cache
+C:\Users\neste\source\repos\NameThatMusic\obj\Debug\NameThatMusic.csproj.CopyComplete
+C:\Users\neste\source\repos\NameThatMusic\obj\Debug\View\SettingsWindow.g.cs
+C:\Users\neste\source\repos\NameThatMusic\obj\Debug\View\SettingsWindow.baml

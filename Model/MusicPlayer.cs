@@ -7,6 +7,7 @@ using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using TagLib;
 
 namespace NameThatMusic.Model
 {
@@ -19,6 +20,7 @@ namespace NameThatMusic.Model
         public bool styleSelected { get; private set; } = false;
         public bool chooseRandomMusic { get; private set; } = true;
         public bool allMusicWasPlayed { get; private set; } = false;
+        public bool IsActive { get; private set; } = false;
         public SoundPlayer musicPlayer { get; private set; }
         public Timer playingTimer { get; set; }
 
@@ -63,6 +65,7 @@ namespace NameThatMusic.Model
             //если музыка загрузилась удачно, то начинаем её проигрывать
             if(musicPlayer != null)
             {
+                IsActive = true;
                 playingTimer.Start();
                 musicPlayer.Play();
                 //проигрывание музыки определённый промежуток времени
@@ -72,6 +75,7 @@ namespace NameThatMusic.Model
             {
                 //произошла ошибка
             }
+            IsActive = false;
         }
 
         //событие - время проигрывания вышло
