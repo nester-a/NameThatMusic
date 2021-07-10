@@ -4,8 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NameThatMusic"
+        xmlns:vm="clr-namespace:NameThatMusic.ViewModel"
         mc:Ignorable="d"
         Title="Name That Song Host Window" Height="450" Width="800" x:Name="HostWindow">
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
     <!--основная гряда-->
     <Grid x:Name="gMainGrid">
         <Grid.RowDefinitions>
@@ -42,32 +46,40 @@
             <!--рисуем очки-->
             <StackPanel Grid.Row="1" Grid.Column="0" x:Name="spFirstPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label Content="Scores"/>
-                <TextBlock Text="0" Margin="0,5"/>
+                <TextBlock Text="{Binding Player1.Scores}" Margin="0,5"/>
+                <Button Margin="2,2" Height="20" Width="20" Content="+" Command="{Binding ClickPlayersOneButtonIncreaseScores}" IsEnabled="{Binding Player1.IsActive}"/>
+                <Button Margin="2,2" Height="20" Width="20" Content="-" Command="{Binding ClickPlayersOneButtonReduceScores}" IsEnabled="{Binding Player1.IsActive}"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Grid.Column="1" x:Name="spSecondPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label Content="Scores"/>
-                <TextBlock Text="0" Margin="0,5"/>
+                <TextBlock Text="{Binding Player2.Scores}"  Margin="0,5"/>
+                <Button Margin="2,2" Height="20" Width="20" Content="+" Command="{Binding ClickPlayersTwoButtonIncreaseScores}" IsEnabled="{Binding Player2.IsActive}"/>
+                <Button Margin="2,2" Height="20" Width="20" Content="-" Command="{Binding ClickPlayersTwoButtonReduceScores}" IsEnabled="{Binding Player2.IsActive}"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Grid.Column="2" x:Name="spThirdPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label Content="Scores"/>
-                <TextBlock Text="0" Margin="0,5"/>
+                <TextBlock Text="{Binding Player3.Scores}"  Margin="0,5"/>
+                <Button Margin="2,2" Height="20" Width="20" Content="+" Command="{Binding ClickPlayersThreeButtonIncreaseScores}" IsEnabled="{Binding Player3.IsActive}"/>
+                <Button Margin="2,2" Height="20" Width="20" Content="-" Command="{Binding ClickPlayersThreeButtonReduceScores}" IsEnabled="{Binding Player3.IsActive}"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Grid.Column="3" x:Name="spFourthPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label Content="Scores"/>
-                <TextBlock Text="0" Margin="0,5"/>
+                <TextBlock Text="{Binding Player4.Scores}"  Margin="0,5"/>
+                <Button Margin="2,2" Height="20" Width="20" Content="+" Command="{Binding ClickPlayersFourButtonIncreaseScores}" IsEnabled="{Binding Player4.IsActive}"/>
+                <Button Margin="2,2" Height="20" Width="20" Content="-" Command="{Binding ClickPlayersFourButtonReduceScores}" IsEnabled="{Binding Player4.IsActive}"/>
             </StackPanel>
             <!---->
             <!--рисуем кнопки добавить игрока-->
-            <Button Grid.Row="2" Grid.Column="0" x:Name="btnAddFirstPlayer" Content="Add player" Width="85" Height="25"/>
-            <Button Grid.Row="2" Grid.Column="1" x:Name="btnAddSecondPlayer" Content="Add player" Width="85" Height="25"/>
-            <Button Grid.Row="2" Grid.Column="2" x:Name="btnAddThirdPlayer" Content="Add player" Width="85" Height="25"/>
-            <Button Grid.Row="2" Grid.Column="3" x:Name="btnAddFourthPlayer" Content="Add player" Width="85" Height="25"/>
+            <Button Grid.Row="2" Grid.Column="0" x:Name="btnAddFirstPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding Player1.CanAddPlayer}" Command="{Binding ClickPlayersOneButton}"/>
+            <Button Grid.Row="2" Grid.Column="1" x:Name="btnAddSecondPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding Player2.CanAddPlayer}" Command="{Binding ClickPlayersTwoButton}"/>
+            <Button Grid.Row="2" Grid.Column="2" x:Name="btnAddThirdPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding Player3.CanAddPlayer}" Command="{Binding ClickPlayersThreeButton}"/>
+            <Button Grid.Row="2" Grid.Column="3" x:Name="btnAddFourthPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding Player4.CanAddPlayer}" Command="{Binding ClickPlayersFourButton}"/>
             <!---->
             <!--рисуем кнопки убрать игрока-->
-            <Button Grid.Row="3" Grid.Column="0" x:Name="btnRemoveFirstPlayer" Content="Remove player" Width="85" Height="25"/>
-            <Button Grid.Row="3" Grid.Column="1" x:Name="btnRemoveSecondPlayer" Content="Remove player" Width="85" Height="25"/>
-            <Button Grid.Row="3" Grid.Column="2" x:Name="btnRemoveThirdPlayer" Content="Remove player" Width="85" Height="25"/>
-            <Button Grid.Row="3" Grid.Column="3" x:Name="btnRemoveFourthPlayer" Content="Remove player" Width="85" Height="25"/>
+            <Button Grid.Row="3" Grid.Column="0" x:Name="btnRemoveFirstPlayer" Content="Remove player" Width="85" Height="25" IsEnabled="{Binding Player1.CanRemovePlayer}" Command="{Binding ClickPlayersOneButton}"/>
+            <Button Grid.Row="3" Grid.Column="1" x:Name="btnRemoveSecondPlayer" Content="Remove player" Width="85" Height="25" IsEnabled="{Binding Player2.CanRemovePlayer}" Command="{Binding ClickPlayersTwoButton}"/>
+            <Button Grid.Row="3" Grid.Column="2" x:Name="btnRemoveThirdPlayer" Content="Remove player" Width="85" Height="25" IsEnabled="{Binding Player3.CanRemovePlayer}" Command="{Binding ClickPlayersThreeButton}"/>
+            <Button Grid.Row="3" Grid.Column="3" x:Name="btnRemoveFourthPlayer" Content="Remove player" Width="85" Height="25" IsEnabled="{Binding Player4.CanRemovePlayer}" Command="{Binding ClickPlayersFourButton}"/>
             <!---->
         </Grid>
         <!--музыкальный плеер-->

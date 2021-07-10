@@ -22,14 +22,19 @@ namespace NameThatMusic.Model
 
         public Game()
         {
-            Players.Add(new Player(defaultPlayerName + " " + (Players.Count + 1)));
+            //Players.Add(new Player(defaultPlayerName + " " + (Players.Count + 1)));
+            AddNewPlayer();
+            AddNewPlayer();
+            AddNewPlayer();
+            AddNewPlayer();
             MusicPlayer = new MusicPlayer("C:\\Music");//нужно добавить конкретную директорию загрузки игры
         }
         public void AddNewPlayer()
         {
             if (Players.Count < 4)
             {
-                Players.Add(new Player(defaultPlayerName + " " + Players.Count.ToString()));
+                //Players.Add(new Player(defaultPlayerName + " " + Players.Count.ToString()));
+                Players.Add(new Player());
             }
             else
             {

@@ -8,11 +8,51 @@ namespace NameThatMusic.Model
 {
     class Player
     {
-        public string Name { get; private set; }
         public int Scores { get; private set; } = 0;
-        public Player(string _name)
+        public bool IsActive { get; private set; } = false;
+        public bool CanAddPlayer
         {
-            Name = _name;
+            get
+            {
+                if (IsActive)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+        public bool CanRemovePlayer
+        {
+            get
+            {
+                if (!IsActive)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+        public Player()
+        {
+
+        }
+        public void ChangeActive()
+        {
+            if (!IsActive)
+            {
+                IsActive = true;
+            }
+            else
+            {
+                IsActive = false;
+                Scores = 0;
+            }
         }
         public void IncreaseScores()
         {
@@ -26,9 +66,17 @@ namespace NameThatMusic.Model
                 Scores = 0;
             }
         }
-        public void SetNewName(string _newName)
-        {
-            Name = _newName;
-        }
+
+        //public string Name { get; private set; }
+        //
+        //public void SetNewName(string _newName)
+        //{
+        //    Name = _newName;
+        //}
+        //
+        //public Player(string _name)
+        //{
+        //    Name = _name;
+        //}
     }
 }

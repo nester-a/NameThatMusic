@@ -13,3 +13,6 @@ C:\Users\neste\source\repos\NameThatMusic\obj\Debug\NameThatMusic.csproj.Generat
 C:\Users\neste\source\repos\NameThatMusic\obj\Debug\NameThatMusic.csproj.CoreCompileInputs.cache
 C:\Users\neste\source\repos\NameThatMusic\obj\Debug\NameThatMusic.exe
 C:\Users\neste\source\repos\NameThatMusic\obj\Debug\NameThatMusic.pdb
+C:\Users\neste\source\repos\NameThatMusic\obj\Debug\View\PlayersWindow.g.cs
+C:\Users\neste\source\repos\NameThatMusic\obj\Debug\View\PlayersWindow.baml
+C:\Users\neste\source\repos\NameThatMusic\obj\Debug\GeneratedInternalTypeHelper.g.cs
