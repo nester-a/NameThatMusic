@@ -19,9 +19,9 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Директория с музыкой" Margin="10,10,10,10"/>
-            <TextBox Width="200" Margin="10,10,10,10"/>
-            <Button Content="Выбрать" Margin="10,10,10,10" Width="100"/>
-            <Button Content="Сохранить" Margin="10,10,10,10" Width="100"/>
+            <TextBox Width="200" Margin="10,10,10,10" Text="{Binding SW_MusicFolder}"/>
+            <Button Content="Выбрать" Margin="10,10,10,10" Width="100" Command="{Binding SW_ClickGetMusicFolder}"/>
+            <Button Content="Сохранить" Margin="10,10,10,10" Width="100" Command="{Binding SW_ClickSaveMusicFolder}"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Время проигрывания" Margin="10,10,10,10"/>

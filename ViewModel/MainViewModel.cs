@@ -3,11 +3,13 @@ using NameThatMusic.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TabControlTestMVVM.ViewModel;
+using Microsoft.Win32;
 
 namespace NameThatMusic.ViewModel
 {
@@ -42,6 +44,7 @@ namespace NameThatMusic.ViewModel
             }
         }
         public int SW_RoundTime { get; set; }
+        public string SW_MusicFolder { get; set; }
 
 
 
@@ -297,6 +300,8 @@ namespace NameThatMusic.ViewModel
                 return new DelegateCommand((p) =>
                 {
                     //ну вот мы нажимаем на песню и она играет
+                    Game.MusicPlayer.Play(GameRoundTime);
+
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
                 },
                 (p) =>
@@ -322,6 +327,7 @@ namespace NameThatMusic.ViewModel
             }
         }
 
+
         public ICommand SW_ClickSaveRoundTime
         {
             get
@@ -339,7 +345,42 @@ namespace NameThatMusic.ViewModel
                 });
             }
         }
-
-
+        public ICommand SW_ClickGetMusicFolder
+        {
+            get
+            {
+                return new DelegateCommand((p) =>
+                {
+                    OpenFileDialog ODF = new OpenFileDialog();
+                    if(ODF.ShowDialog() == true)
+                    {
+                        string tmp = ODF.FileName;
+                        int index = tmp.LastIndexOf('\\');
+                        SW_MusicFolder = tmp.Substring(0, index);
+                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SW_MusicFolder"));
+                },
+                (p) =>
+                {
+                    return true;
+                });
+            }
+        }
+        public ICommand SW_ClickSaveMusicFolder
+        {
+            get
+            {
+                return new DelegateCommand((p) =>
+                {
+                    Game.MusicPlayer = new MusicPlayer(SW_MusicFolder);
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SW_MusicFolder"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
+                },
+                (p) =>
+                {
+                    return true;
+                });
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Media;
 using TagLib;
 
 namespace NameThatMusic.Model
@@ -21,7 +22,7 @@ namespace NameThatMusic.Model
         public bool chooseRandomMusic { get; private set; } = true;
         public bool allMusicWasPlayed { get; private set; } = false;
         public bool IsActive { get; private set; } = false;
-        public SoundPlayer musicPlayer { get; private set; }
+        public MediaPlayer musicPlayer { get; private set; } = new MediaPlayer();
         public Timer playingTimer { get; set; }
 
         //конструктор
@@ -59,7 +60,7 @@ namespace NameThatMusic.Model
 
             //если ещё есть песни, которые не проигрывались, то продолжаем играть
             int time = _seconds * 1000;//переводим время в милисекунды
-            musicPlayer = new SoundPlayer(CurrentMusic.Path);
+            musicPlayer = new MediaPlayer();
             playingTimer = new Timer(time);
 
             //если музыка загрузилась удачно, то начинаем её проигрывать
@@ -67,6 +68,7 @@ namespace NameThatMusic.Model
             {
                 IsActive = true;
                 playingTimer.Start();
+                musicPlayer.Open(new Uri(CurrentMusic.Path, UriKind.Absolute));
                 musicPlayer.Play();
                 //проигрывание музыки определённый промежуток времени
                 playingTimer.Elapsed += Timer_Elapsed;
@@ -90,7 +92,6 @@ namespace NameThatMusic.Model
             playingTimer.Stop();
             playingTimer.Dispose();
             musicPlayer.Stop();
-            musicPlayer.Dispose();
 
             //показываем название композиции, которая играла, каким-нибудь образом
             //
