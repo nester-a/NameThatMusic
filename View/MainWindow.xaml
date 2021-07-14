@@ -76,7 +76,7 @@
             </StackPanel>
             <!---->
             <!--рисуем кнопки добавить игрока-->
-            <Button Grid.Row="2" Grid.Column="0" x:Name="btnAddFirstPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding Player1.CanAddPlayer}" Command="{Binding ClickPlayersOneButton}"/>
+            <Button Grid.Row="2" Grid.Column="0" x:Name="btnAddFirstPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding MW_Player1.CanAddPlayer}" Command="{Binding ClickPlayersOneButton}"/>
             <Button Grid.Row="2" Grid.Column="1" x:Name="btnAddSecondPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding Player2.CanAddPlayer}" Command="{Binding ClickPlayersTwoButton}"/>
             <Button Grid.Row="2" Grid.Column="2" x:Name="btnAddThirdPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding Player3.CanAddPlayer}" Command="{Binding ClickPlayersThreeButton}"/>
             <Button Grid.Row="2" Grid.Column="3" x:Name="btnAddFourthPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding Player4.CanAddPlayer}" Command="{Binding ClickPlayersFourButton}"/>

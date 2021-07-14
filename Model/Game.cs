@@ -49,6 +49,9 @@ namespace NameThatMusic.Model
             }
         }
 
+
+
+
         //наш музыкальный плеер, который будет ставить музыку
         public MusicPlayer MusicPlayer { get; set; }
 

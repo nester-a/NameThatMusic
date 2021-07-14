@@ -20,10 +20,16 @@ namespace NameThatMusic.ViewModel
         private SettingsWindow _settingsWindow;
         
 
-        public Player Player1 { get; set; } = new Player();
-        public Player Player2 { get; set; } = new Player();
-        public Player Player3 { get; set; } = new Player();
-        public Player Player4 { get; set; } = new Player();
+        public Player MW_Player1
+        {
+            get
+            {
+                return Player1;
+            }
+        }
+        //public Player Player2 { get; set; } = new Player();
+        //public Player Player3 { get; set; } = new Player();
+        //public Player Player4 { get; set; } = new Player();
         //public Game Game { get; set; } = new Game();
         public int GameRoundTime
         {
