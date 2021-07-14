@@ -28,21 +28,11 @@ namespace NameThatMusic.Model
         //конструктор
         public MusicPlayer(string _musicFolder)
         {
-            //ищем музыку в переданной в конструктор директории
-            string[] musicFiles = Directory.GetFiles(_musicFolder, "*.mp3");
-            for (int i = 0; i < musicFiles.Length; i++)
-            {
-                PlayList.Add(new Music(musicFiles[i]));
+            LoadMusic(_musicFolder);
+        }
+        public MusicPlayer()
+        {
 
-                //теперь нужно каким-то образом задать песням название и определить их жанр
-                //скорее всего это всё будет делаться в настройках игры
-                //т.е. перед запуском игры, нужно будет просканировать директорию с музыкой
-                //затем отобразить список адресов песен
-                //и в ручную к каждом экземпляру добавить музыку и жанр
-            }
-
-            //заполнение общего плэйлиста из директории
-            CurrentMusic = NextMusic();
         }
 
         //он нам нужен, чтобы ставить песни случайным образом
@@ -91,7 +81,7 @@ namespace NameThatMusic.Model
             //останавливаем музыку
             playingTimer.Stop();
             playingTimer.Dispose();
-            musicPlayer.Stop();
+            musicPlayer.Stop(); //здесь вылазит ошибка воспроизведения
 
             //показываем название композиции, которая играла, каким-нибудь образом
             //
@@ -224,6 +214,23 @@ namespace NameThatMusic.Model
             {
                 music.wasPlayed = false;
             }
+            CurrentMusic = NextMusic();
+        }
+        public void LoadMusic(string _musicFolder)
+        {
+            string[] musicFiles = Directory.GetFiles(_musicFolder, "*.mp3");
+            for (int i = 0; i < musicFiles.Length; i++)
+            {
+                PlayList.Add(new Music(musicFiles[i]));
+
+                //теперь нужно каким-то образом задать песням название и определить их жанр
+                //скорее всего это всё будет делаться в настройках игры
+                //т.е. перед запуском игры, нужно будет просканировать директорию с музыкой
+                //затем отобразить список адресов песен
+                //и в ручную к каждом экземпляру добавить музыку и жанр
+            }
+
+            //заполнение общего плэйлиста из директории
             CurrentMusic = NextMusic();
         }
     }

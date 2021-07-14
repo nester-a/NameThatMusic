@@ -58,7 +58,7 @@ namespace NameThatMusic.Model
         public bool IsStarted { get; set; } = false;
         public Game()
         {
-            //MusicPlayer = new MusicPlayer("C:\\Music");//нужно добавить конкретную директорию загрузки игры
+            MusicPlayer = new MusicPlayer();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

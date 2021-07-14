@@ -13,18 +13,18 @@ using Microsoft.Win32;
 
 namespace NameThatMusic.ViewModel
 {
-    class MainViewModel : INotifyPropertyChanged
+    class MainViewModel : BaseViewModel, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private PlayersWindow _playersWindow;
         private SettingsWindow _settingsWindow;
-
+        
 
         public Player Player1 { get; set; } = new Player();
         public Player Player2 { get; set; } = new Player();
         public Player Player3 { get; set; } = new Player();
         public Player Player4 { get; set; } = new Player();
-        public Game Game { get; set; } = new Game();
+        //public Game Game { get; set; } = new Game();
         public int GameRoundTime
         {
             get
@@ -43,9 +43,9 @@ namespace NameThatMusic.ViewModel
                 return false;
             }
         }
+
         public int SW_RoundTime { get; set; }
         public string SW_MusicFolder { get; set; }
-
 
 
         #region Add/Remove Player Buttons
@@ -317,7 +317,9 @@ namespace NameThatMusic.ViewModel
                 return new DelegateCommand((p) =>
                 {
                     _settingsWindow = new SettingsWindow();
+                    _settingsWindow.Closing += _settingsWindow_Closing;
                     _settingsWindow.Show();
+                    
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
                 },
                 (p) =>
@@ -327,6 +329,11 @@ namespace NameThatMusic.ViewModel
             }
         }
 
+        private void _settingsWindow_Closing(object sender, CancelEventArgs e)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("GameRoundTime"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
+        }
 
         public ICommand SW_ClickSaveRoundTime
         {
@@ -352,7 +359,7 @@ namespace NameThatMusic.ViewModel
                 return new DelegateCommand((p) =>
                 {
                     OpenFileDialog ODF = new OpenFileDialog();
-                    if(ODF.ShowDialog() == true)
+                    if (ODF.ShowDialog() == true)
                     {
                         string tmp = ODF.FileName;
                         int index = tmp.LastIndexOf('\\');
@@ -372,7 +379,8 @@ namespace NameThatMusic.ViewModel
             {
                 return new DelegateCommand((p) =>
                 {
-                    Game.MusicPlayer = new MusicPlayer(SW_MusicFolder);
+                    Game.MusicPlayer = new MusicPlayer();
+                    Game.MusicPlayer.LoadMusic(SW_MusicFolder);
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SW_MusicFolder"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
                 },
