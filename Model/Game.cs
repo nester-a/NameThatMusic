@@ -49,7 +49,7 @@ namespace NameThatMusic.Model
             }
         }
 
-
+        CancellationTokenSource stopSource;
 
 
         //наш музыкальный плеер, который будет ставить музыку
@@ -58,10 +58,21 @@ namespace NameThatMusic.Model
         //время на проигрывание музыки, в секундах
         public int RoundTime { get; private set; } = 10;
 
+        private int deffaultTime = 10;
+
         public bool IsStarted { get; set; } = false;
+        public bool RoundIsStarted { get; set; }
+        public bool RoundIsStoped { get; set; }
         public Game()
         {
             MusicPlayer = new MusicPlayer();
+        }
+        public string CurrentRoundMusic
+        {
+            get
+            {
+                return string.Concat(MusicPlayer.CurrentMusic.Artist, " - ", MusicPlayer.CurrentMusic.Name);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -82,7 +93,20 @@ namespace NameThatMusic.Model
         }
         public void StartRound()
         {
-            MusicPlayer.Play(RoundTime);
+            RoundIsStoped = false;
+            RoundIsStarted = true;
+            //MusicPlayer.Play(RoundTime);
+            TimeIsRunningOut();
+        }
+        public void StopRound()
+        {
+            RoundIsStarted = false;
+            RoundIsStoped = true;
+            //MusicPlayer.StopMusic();
+            stopSource?.Cancel();
+            RoundTime = deffaultTime;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoundTime"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentRoundMusic"));
         }
         public void StartNewGame()
         {
@@ -91,7 +115,28 @@ namespace NameThatMusic.Model
         public void ChangeRoundTime(int newRoundTime)
         {
             RoundTime = newRoundTime;
+            deffaultTime = RoundTime;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoundTime"));
+        }
+        
+        public void TimeIsRunningOut()
+        {
+            stopSource = new CancellationTokenSource();
+            Task.Factory.StartNew(() =>
+            {
+                while (RoundTime > 0)
+                {
+                    Task.Delay(1000).Wait();
+                    RoundTime--;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoundTime"));
+                    if (stopSource.Token.IsCancellationRequested) return;
+                }
+            });
+            RoundTime = deffaultTime;
+            RoundIsStarted = false;
+            RoundIsStoped = true;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoundTime"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentRoundMusic"));
         }
 
 

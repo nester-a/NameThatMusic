@@ -90,8 +90,9 @@
         </Grid>
         <!--музыкальный плеер-->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button x:Name="btnPlay" Content="PLAY!" Command="{Binding ClickPlay}"/>
-            <Label x:Name="Timer" Content="{Binding GameRoundTime, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0"/>
+            <Button x:Name="btnPlay" Content="PLAY!" Command="{Binding ClickPlay}" Margin="10,0,0,0"/>
+            <Button x:Name="btnStop" Content="STOP!" Command="{Binding ClickStop}" Margin="10,0,0,0"/>
+            <Label x:Name="Timer" Content="{Binding Game.RoundTime, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0"/>
             <TextBlock x:Name="txtblckSongName" Text="Song Name" Margin="10,5,0,0" Width="150"/>
         </StackPanel>
     </Grid>

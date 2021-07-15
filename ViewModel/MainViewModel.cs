@@ -20,24 +20,13 @@ namespace NameThatMusic.ViewModel
         private SettingsWindow _settingsWindow;
         
 
-        public Player MW_Player1
-        {
-            get
-            {
-                return Player1;
-            }
-        }
-        //public Player Player2 { get; set; } = new Player();
-        //public Player Player3 { get; set; } = new Player();
-        //public Player Player4 { get; set; } = new Player();
+        public Player Player1 { get; set; } = new Player();
+        public Player Player2 { get; set; } = new Player();
+        public Player Player3 { get; set; } = new Player();
+        public Player Player4 { get; set; } = new Player();
+
         //public Game Game { get; set; } = new Game();
-        public int GameRoundTime
-        {
-            get
-            {
-                return Game.RoundTime;
-            }
-        }
+        
         public bool CanStartPlayMusic
         {
             get
@@ -306,7 +295,24 @@ namespace NameThatMusic.ViewModel
                 return new DelegateCommand((p) =>
                 {
                     //ну вот мы нажимаем на песню и она играет
-                    Game.MusicPlayer.Play(GameRoundTime);
+                    Game.StartRound();
+
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
+                },
+                (p) =>
+                {
+                    return true;
+                });
+            }
+        }
+        public ICommand ClickStop
+        {
+            get
+            {
+                return new DelegateCommand((p) =>
+                {
+                    //останавливаем раунд
+                    Game.StopRound();
 
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
                 },
