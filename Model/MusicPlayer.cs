@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Media;
-using TagLib;
 
 namespace NameThatMusic.Model
 {
-    class MusicPlayer
+    class MusicPlayer : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        static Random random = new Random();
+
         public ObservableCollection<Music> PlayList { get; private set; } = new ObservableCollection<Music>();
         public ObservableCollection<Music> CurrentPlayList { get; private set; } = new ObservableCollection<Music>();
         public Music CurrentMusic { get; private set; }
@@ -23,22 +27,15 @@ namespace NameThatMusic.Model
         public bool allMusicWasPlayed { get; private set; } = false;
         public bool IsActive { get; private set; } = false;
         public MediaPlayer musicPlayer { get; private set; } = new MediaPlayer();
-        public Timer playingTimer { get; set; }
 
-        //конструктор
-        public MusicPlayer(string _musicFolder)
-        {
-            LoadMusic(_musicFolder);
-        }
+
         public MusicPlayer()
         {
 
         }
 
-        //он нам нужен, чтобы ставить песни случайным образом
-        static Random random = new Random();
-
-        public void Play(int _seconds)
+        
+        public void PlayMusic(int _seconds)
         {
             //проверяем все-ли песни уже играли
             if(CurrentMusic == null && allMusicWasPlayed)
@@ -51,17 +48,17 @@ namespace NameThatMusic.Model
             //если ещё есть песни, которые не проигрывались, то продолжаем играть
             int time = _seconds * 1000;//переводим время в милисекунды
             musicPlayer = new MediaPlayer();
-            playingTimer = new Timer(time);
+            //playingTimer = new Timer(time);
 
             //если музыка загрузилась удачно, то начинаем её проигрывать
             if(musicPlayer != null)
             {
                 IsActive = true;
-                playingTimer.Start();
+                //playingTimer.Start();
                 musicPlayer.Open(new Uri(CurrentMusic.Path, UriKind.Absolute));
                 musicPlayer.Play();
                 //проигрывание музыки определённый промежуток времени
-                playingTimer.Elapsed += Timer_Elapsed;
+                //playingTimer.Elapsed += Timer_Elapsed;
             }
             else
             {
@@ -69,18 +66,11 @@ namespace NameThatMusic.Model
             }
             IsActive = false;
         }
-
-        //событие - время проигрывания вышло
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            StopMusic();
-        }
-
         public void StopMusic()
         {
             //останавливаем музыку
-            playingTimer.Stop();
-            playingTimer.Dispose();
+            //playingTimer.Stop();
+            //playingTimer.Dispose();
             musicPlayer.Stop(); //здесь вылазит ошибка воспроизведения
 
             //показываем название композиции, которая играла, каким-нибудь образом
@@ -90,6 +80,8 @@ namespace NameThatMusic.Model
             //переключаем песню на следующую
             CurrentMusic.wasPlayed = true;
             CurrentMusic = NextMusic();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
         }
         public Music NextMusic()
         {
@@ -102,26 +94,6 @@ namespace NameThatMusic.Model
             {
                 return GetNextMusic();
             }
-        }
-        public void ChangeMusicStyle(string _style)
-        {
-            //выбираем жанр песен, которые будем проигрывать
-            CurrentPlayList.Clear();
-            for (int i = 0; i < PlayList.Count; i++)
-            {
-                if(PlayList[i].MusicStyle == _style)
-                {
-                    CurrentPlayList.Add(PlayList[i]);
-                }
-            }
-            styleSelected = true;
-            CurrentMusic = NextMusic();
-        }
-        public void ResetMusicStyle()
-        {
-            //сбрасываем заданый музыкальный жанр, после этого будет проигрываться вся музыка
-            CurrentPlayList = null;
-            styleSelected = false;
         }
         public Music GetRandomMusic()
         {
@@ -203,19 +175,6 @@ namespace NameThatMusic.Model
             allMusicWasPlayed = true;
             return allMusicWasPlayed;
         }
-        public void ResetAll()
-        {
-            //сбрасываем всю музыку
-            ResetMusicStyle();
-            CurrentMusic = null;
-            CurrentMusicIndex = 0;
-            allMusicWasPlayed = false;
-            foreach (var music in PlayList)
-            {
-                music.wasPlayed = false;
-            }
-            CurrentMusic = NextMusic();
-        }
         public void LoadMusic(string _musicFolder)
         {
             string[] musicFiles = Directory.GetFiles(_musicFolder, "*.mp3");
@@ -231,6 +190,55 @@ namespace NameThatMusic.Model
             }
             //заполнение общего плэйлиста из директории
             CurrentMusic = NextMusic();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
         }
+
+
+        //не используется
+        //public void ChangeMusicStyle(string _style)
+        //{
+        //    //выбираем жанр песен, которые будем проигрывать
+        //    CurrentPlayList.Clear();
+        //    for (int i = 0; i < PlayList.Count; i++)
+        //    {
+        //        if(PlayList[i].MusicStyle == _style)
+        //        {
+        //            CurrentPlayList.Add(PlayList[i]);
+        //        }
+        //    }
+        //    styleSelected = true;
+        //    CurrentMusic = NextMusic();
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
+        //}
+        //конструктор
+        //public MusicPlayer(string _musicFolder)
+        //{
+        //    LoadMusic(_musicFolder);
+        //}
+        //
+        //public void ResetAll()
+        //{
+        //    //сбрасываем всю музыку
+        //    ResetMusicStyle();
+        //    CurrentMusic = null;
+        //    CurrentMusicIndex = 0;
+        //    allMusicWasPlayed = false;
+        //    foreach (var music in PlayList)
+        //    {
+        //        music.wasPlayed = false;
+        //    }
+        //    CurrentMusic = NextMusic();
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
+        //}
+        //
+        //public void ResetMusicStyle()
+        //{
+        //    //сбрасываем заданый музыкальный жанр, после этого будет проигрываться вся музыка
+        //    CurrentPlayList = null;
+        //    styleSelected = false;
+        //}
     }
 }

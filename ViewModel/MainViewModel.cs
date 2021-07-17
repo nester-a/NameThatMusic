@@ -20,10 +20,6 @@ namespace NameThatMusic.ViewModel
         private SettingsWindow _settingsWindow;
         
 
-        public Player Player1 { get; set; } = new Player();
-        public Player Player2 { get; set; } = new Player();
-        public Player Player3 { get; set; } = new Player();
-        public Player Player4 { get; set; } = new Player();
 
         //public Game Game { get; set; } = new Game();
         
@@ -255,7 +251,7 @@ namespace NameThatMusic.ViewModel
                     //    _playersWindow = new PlayersWindow();
                     //    _playersWindow.Show();
                     //}
-                    Game.IsStarted = true;
+                    Game.StartGame();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStartPlayMusic"));
                 },
@@ -278,7 +274,7 @@ namespace NameThatMusic.ViewModel
                     //    _playersWindow = null;
                     //}
 
-                    Game.IsStarted = false;
+                    Game.EndGame();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStartPlayMusic"));
                 },
@@ -298,6 +294,7 @@ namespace NameThatMusic.ViewModel
                     Game.StartRound();
 
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
                 },
                 (p) =>
                 {

@@ -67,6 +67,7 @@ namespace NameThatMusic.Model
             }
         }
 
+        //не используется
         //public string Name { get; private set; }
         //
         //public void SetNewName(string _newName)

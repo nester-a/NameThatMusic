@@ -11,6 +11,10 @@ namespace NameThatMusic.Model
 {
     class Game : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        CancellationTokenSource stopSource;
+        private int deffaultTime = 10;
+
         public bool CanBeCanceled
         {
             get
@@ -48,69 +52,50 @@ namespace NameThatMusic.Model
                 return false;
             }
         }
-
-        CancellationTokenSource stopSource;
-
-
-        //наш музыкальный плеер, который будет ставить музыку
         public MusicPlayer MusicPlayer { get; set; }
-
-        //время на проигрывание музыки, в секундах
         public int RoundTime { get; private set; } = 10;
-
-        private int deffaultTime = 10;
-
         public bool IsStarted { get; set; } = false;
         public bool RoundIsStarted { get; set; }
         public bool RoundIsStoped { get; set; }
+        public string CurrentMusicName
+        {
+            get
+            {
+                if (MusicPlayer.allMusicWasPlayed)
+                {
+                    return "All Music Was Played";
+                }
+                else  if (MusicPlayer.CurrentMusic == null)
+                {
+                    return "No song";
+                }
+                return MusicPlayer.CurrentMusic.Name;
+            }
+        }
+
+
         public Game()
         {
             MusicPlayer = new MusicPlayer();
         }
-        public string CurrentRoundMusic
-        {
-            get
-            {
-                return string.Concat(MusicPlayer.CurrentMusic.Artist, " - ", MusicPlayer.CurrentMusic.Name);
-            }
-        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        public void StartGame()
-        {
-            IsStarted = true;
-
-            //if (!MusicPlayer.allMusicWasPlayed)
-            //{
-            //    MusicPlayer.Play(RoundTime);
-            //}
-            //else
-            //{
-            //    //вся музыка проигралась
-            //    //ждём пока игроки решат, что делать
-            //}
-        }
         public void StartRound()
         {
             RoundIsStoped = false;
             RoundIsStarted = true;
-            //MusicPlayer.Play(RoundTime);
+            MusicPlayer.PlayMusic(RoundTime);
             TimeIsRunningOut();
         }
         public void StopRound()
         {
             RoundIsStarted = false;
             RoundIsStoped = true;
-            //MusicPlayer.StopMusic();
+            MusicPlayer.StopMusic();
             stopSource?.Cancel();
             RoundTime = deffaultTime;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoundTime"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentRoundMusic"));
-        }
-        public void StartNewGame()
-        {
-            MusicPlayer.ResetAll();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
         }
         public void ChangeRoundTime(int newRoundTime)
         {
@@ -118,7 +103,6 @@ namespace NameThatMusic.Model
             deffaultTime = RoundTime;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoundTime"));
         }
-        
         public void TimeIsRunningOut()
         {
             stopSource = new CancellationTokenSource();
@@ -130,16 +114,35 @@ namespace NameThatMusic.Model
                     RoundTime--;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoundTime"));
                     if (stopSource.Token.IsCancellationRequested) return;
+                    if (RoundTime <= 0)
+                    {
+                        stopSource = new CancellationTokenSource();
+                        StopRound();
+                    }
                 }
             });
             RoundTime = deffaultTime;
             RoundIsStarted = false;
             RoundIsStoped = true;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoundTime"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentRoundMusic"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
+        }
+        public void StartGame()
+        {
+            IsStarted = true;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsStarted"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanBeStarted"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanBeCanceled"));
+        }
+        public void EndGame()
+        {
+            IsStarted = false;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsStarted"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanBeStarted"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanBeCanceled"));
         }
 
-
+        //не используется
         //private string defaultPlayerName = "Player";
         //
         //коллекция игроков
@@ -173,6 +176,26 @@ namespace NameThatMusic.Model
         //public void PlayerDoTurn(Player _player)
         //{
         //    //пока не понимаю, как будут ходить игроки
+        //}
+        //
+        //public void StartGame()
+        //{
+        //    IsStarted = true;
+
+        //    //if (!MusicPlayer.allMusicWasPlayed)
+        //    //{
+        //    //    MusicPlayer.Play(RoundTime);
+        //    //}
+        //    //else
+        //    //{
+        //    //    //вся музыка проигралась
+        //    //    //ждём пока игроки решат, что делать
+        //    //}
+        //}
+        //
+        //public void StartNewGame()
+        //{
+        //    MusicPlayer.ResetAll();
         //}
     }
 }
