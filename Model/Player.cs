@@ -1,22 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace NameThatMusic.Model
 {
-    class Player
+    class Player : INotifyPropertyChanged
     {
-        public string Name { get; private set; }
         public int Scores { get; private set; } = 0;
-        public Player(string _name)
+        public bool IsActive { get; private set; } = false;
+        public bool CanAddPlayer
         {
-            Name = _name;
+            get
+            {
+                if (IsActive)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+        public bool CanRemovePlayer
+        {
+            get
+            {
+                if (!IsActive)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+        public Player()
+        {
+
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void ChangeActive()
+        {
+            if (!IsActive)
+            {
+                IsActive = true;
+            }
+            else
+            {
+                IsActive = false;
+                Scores = 0;
+            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsActive"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanAddPlayer"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanRemovePlayer"));
         }
         public void IncreaseScores()
         {
             Scores++;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Scores"));
         }
         public void ReduceScores()
         {
@@ -25,10 +73,20 @@ namespace NameThatMusic.Model
             {
                 Scores = 0;
             }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Scores"));
         }
-        public void SetNewName(string _newName)
-        {
-            Name = _newName;
-        }
+
+        //не используется
+        //public string Name { get; private set; }
+        //
+        //public void SetNewName(string _newName)
+        //{
+        //    Name = _newName;
+        //}
+        //
+        //public Player(string _name)
+        //{
+        //    Name = _name;
+        //}
     }
 }
