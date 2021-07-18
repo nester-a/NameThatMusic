@@ -18,24 +18,37 @@ namespace NameThatMusic.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         private PlayersWindow _playersWindow;
         private SettingsWindow _settingsWindow;
-        
 
-
-        //public Game Game { get; set; } = new Game();
-        
-        public bool CanStartPlayMusic
+        public bool CanStartGame
         {
             get
             {
-                if ((Player1.IsActive || Player2.IsActive || Player3.IsActive || Player4.IsActive) && Game.IsStarted)
-                {
-                    return true;
-                }
-                return false;
+                return (Player1.IsActive || Player2.IsActive || Player3.IsActive || Player4.IsActive) && Game.MusicPlayer.CurrentMusic != null;
+            }
+        }
+        public bool CanEndGame
+        {
+            get
+            {
+                return !Game.IsStarted;
+            }
+        }
+        public bool CanPlayMusic
+        {
+            get
+            {
+                return Game.IsStarted && Game.MusicPlayer.IsActive == false && !Game.MusicPlayer.allMusicWasPlayed;
+            }
+        }
+        public bool CanStopMusic
+        {
+            get
+            {
+                return Game.MusicPlayer.IsActive == true;
             }
         }
 
-        public int SW_RoundTime { get; set; }
+        public int SW_RoundTime { get; set; } = Game.RoundTime;
         public string SW_MusicFolder { get; set; }
 
 
@@ -49,6 +62,7 @@ namespace NameThatMusic.ViewModel
                     Player1.ChangeActive();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Player1"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStartPlayMusic"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStartGame"));
                 },
                 (p) =>
                 {
@@ -65,6 +79,7 @@ namespace NameThatMusic.ViewModel
                     Player2.ChangeActive();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Player2"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStartPlayMusic"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStartGame"));
                 },
                 (p) =>
                 {
@@ -81,6 +96,7 @@ namespace NameThatMusic.ViewModel
                     Player3.ChangeActive();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Player3"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStartPlayMusic"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStartGame"));
                 },
                 (p) =>
                 {
@@ -97,6 +113,7 @@ namespace NameThatMusic.ViewModel
                     Player4.ChangeActive();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Player4"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStartPlayMusic"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStartGame"));
                 },
                 (p) =>
                 {
@@ -238,22 +255,25 @@ namespace NameThatMusic.ViewModel
         #endregion
         #endregion
 
-
+        #region Game Buttons
         public ICommand ClickStartGame
         {
             get
             {
                 return new DelegateCommand((p) =>
                 {
-                    ////открытие окна для игроков
-                    //if(_playersWindow == null)
-                    //{
-                    //    _playersWindow = new PlayersWindow();
-                    //    _playersWindow.Show();
-                    //}
+                    //открытие окна для игроков
+                    if (_playersWindow == null)
+                    {
+                        _playersWindow = new PlayersWindow();
+                        _playersWindow.Show();
+                        _playersWindow.Closing += _playersWindow_Closing;
+                    }
                     Game.StartGame();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStartPlayMusic"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanEndGame"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanPlayMusic"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStopMusic"));
                 },
                 (p) =>
                 {
@@ -268,15 +288,16 @@ namespace NameThatMusic.ViewModel
                 return new DelegateCommand((p) =>
                 {
                     //закрываем окно с игроками
-                    //if(_playersWindow != null)
-                    //{
-                    //    _playersWindow.Close();
-                    //    _playersWindow = null;
-                    //}
-
+                    if (_playersWindow != null)
+                    {
+                        _playersWindow.Close();
+                        _playersWindow = null;
+                    }
                     Game.EndGame();
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStartPlayMusic"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanPlayMusic"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStopMusic"));
                 },
                 (p) =>
                 {
@@ -295,6 +316,8 @@ namespace NameThatMusic.ViewModel
 
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStopMusic"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanPlayMusic"));
                 },
                 (p) =>
                 {
@@ -312,6 +335,8 @@ namespace NameThatMusic.ViewModel
                     Game.StopRound();
 
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStopMusic"));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanPlayMusic"));
                 },
                 (p) =>
                 {
@@ -337,13 +362,9 @@ namespace NameThatMusic.ViewModel
                 });
             }
         }
+        #endregion
 
-        private void _settingsWindow_Closing(object sender, CancelEventArgs e)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("GameRoundTime"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
-        }
-
+        #region Settings Window Command
         public ICommand SW_ClickSaveRoundTime
         {
             get
@@ -399,5 +420,19 @@ namespace NameThatMusic.ViewModel
                 });
             }
         }
+        #endregion
+
+        #region Players/Settings Windows Closing Event
+        private void _settingsWindow_Closing(object sender, CancelEventArgs e)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("GameRoundTime"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Game"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanStartGame"));
+        }
+        private void _playersWindow_Closing(object sender, CancelEventArgs e)
+        {
+            _playersWindow = null;
+        }
+        #endregion
     }
 }

@@ -26,7 +26,7 @@
         </Menu>
         <!--кнопки начать/закончить игру-->
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="Start Game" Height="20" Width="75" Margin="5,5,5,5" IsEnabled="{Binding Game.CanBeStarted}" Command="{Binding ClickStartGame}"/>
+            <Button Content="Start Game" Height="20" Width="75" Margin="5,5,5,5" IsEnabled="{Binding CanStartGame}" Command="{Binding ClickStartGame}"/>
             <Button Content="End Game" Height="20" Width="75" Margin="5,5,5,5" IsEnabled="{Binding Game.CanBeCanceled}" Command="{Binding ClickEndGame}"/>
         </StackPanel>
         <!--игровое поле-->
@@ -90,8 +90,8 @@
         </Grid>
         <!--музыкальный плеер-->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button x:Name="btnPlay" Content="PLAY!" Command="{Binding ClickPlay}" Margin="10,0,0,0"/>
-            <Button x:Name="btnStop" Content="STOP!" Command="{Binding ClickStop}" Margin="10,0,0,0"/>
+            <Button x:Name="btnPlay" Content="PLAY!" Command="{Binding ClickPlay}" Margin="10,0,0,0" IsEnabled="{Binding CanPlayMusic}"/>
+            <Button x:Name="btnStop" Content="STOP!" Command="{Binding ClickStop}" Margin="10,0,0,0" IsEnabled="{Binding CanStopMusic}"/>
             <Label x:Name="Timer" Content="{Binding Game.RoundTime, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0"/>
             <TextBlock x:Name="txtblckSongName" Text="{Binding Game.CurrentMusicName}" Margin="10,5,0,0" Width="250"/>
         </StackPanel>

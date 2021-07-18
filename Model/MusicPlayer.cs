@@ -20,7 +20,7 @@ namespace NameThatMusic.Model
 
         public ObservableCollection<Music> PlayList { get; private set; } = new ObservableCollection<Music>();
         public ObservableCollection<Music> CurrentPlayList { get; private set; } = new ObservableCollection<Music>();
-        public Music CurrentMusic { get; private set; }
+        public Music CurrentMusic { get; private set; } = null;
         public int CurrentMusicIndex { get; private set; } = 0;
         public bool styleSelected { get; private set; } = false;
         public bool chooseRandomMusic { get; private set; } = true;
@@ -35,51 +35,26 @@ namespace NameThatMusic.Model
         }
 
         
-        public void PlayMusic(int _seconds)
+        public void PlayMusic()
         {
             //проверяем все-ли песни уже играли
-            if(CurrentMusic == null && allMusicWasPlayed)
-            {
-                //останавливаем игру, чтобы игрок выбрал что делать дальше
-                //возможно он захочет начать игру заново, выбрать другой жанр
-                //или закрыть игру
-            }
-
-            //если ещё есть песни, которые не проигрывались, то продолжаем играть
-            int time = _seconds * 1000;//переводим время в милисекунды
-            musicPlayer = new MediaPlayer();
-            //playingTimer = new Timer(time);
-
-            //если музыка загрузилась удачно, то начинаем её проигрывать
-            if(musicPlayer != null)
+            if(CurrentMusic != null && !allMusicWasPlayed)
             {
                 IsActive = true;
-                //playingTimer.Start();
                 musicPlayer.Open(new Uri(CurrentMusic.Path, UriKind.Absolute));
                 musicPlayer.Play();
-                //проигрывание музыки определённый промежуток времени
-                //playingTimer.Elapsed += Timer_Elapsed;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsActive"));
             }
-            else
-            {
-                //произошла ошибка
-            }
-            IsActive = false;
         }
         public void StopMusic()
         {
-            //останавливаем музыку
-            //playingTimer.Stop();
-            //playingTimer.Dispose();
+            IsActive = false;
             musicPlayer.Stop(); //здесь вылазит ошибка воспроизведения
-
-            //показываем название композиции, которая играла, каким-нибудь образом
-            //
-            //
 
             //переключаем песню на следующую
             CurrentMusic.wasPlayed = true;
             CurrentMusic = NextMusic();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsActive"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
         }
@@ -100,6 +75,7 @@ namespace NameThatMusic.Model
             //проверяем вся-ли музыка была проиграна
             if (AllMusicWasPlayed())
             {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("allMusicWasPlayed"));
                 return null;
             }
             //выбирает случайную следующую песню
@@ -110,6 +86,8 @@ namespace NameThatMusic.Model
                 {
                     randomNumberOfMusic = random.Next(0, CurrentPlayList.Count);
                 }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
                 return CurrentPlayList[randomNumberOfMusic];
             }
             else
@@ -119,6 +97,8 @@ namespace NameThatMusic.Model
                 {
                     randomNumberOfMusic = random.Next(0, PlayList.Count);
                 }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
                 return PlayList[randomNumberOfMusic];
             }
         }
@@ -127,6 +107,7 @@ namespace NameThatMusic.Model
             //проверяем вся-ли музыка была проиграна
             if (AllMusicWasPlayed())
             {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("allMusicWasPlayed"));
                 return null;
             }
             //выбирает следующую песню по порядку проигрывания и проверяет не превышает-ли индекс текущей песни размер коллекции
@@ -136,6 +117,8 @@ namespace NameThatMusic.Model
                 {
                     CurrentMusicIndex++;
                 }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
                 return CurrentPlayList[CurrentMusicIndex];
             }
             else
@@ -144,6 +127,8 @@ namespace NameThatMusic.Model
                 {
                     CurrentMusicIndex++;
                 }
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
                 return PlayList[CurrentMusicIndex];
             }
         }
@@ -157,6 +142,9 @@ namespace NameThatMusic.Model
                     if (CurrentPlayList[i].wasPlayed != true)
                     {
                         allMusicWasPlayed = false;
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("allMusicWasPlayed"));
                         return allMusicWasPlayed;
                     }
                 }
@@ -168,11 +156,18 @@ namespace NameThatMusic.Model
                     if (PlayList[i].wasPlayed != true)
                     {
                         allMusicWasPlayed = false;
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("allMusicWasPlayed"));
                         return allMusicWasPlayed;
                     }
                 }
             }
             allMusicWasPlayed = true;
+            CurrentMusic = null;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("allMusicWasPlayed"));
             return allMusicWasPlayed;
         }
         public void LoadMusic(string _musicFolder)
@@ -181,14 +176,7 @@ namespace NameThatMusic.Model
             for (int i = 0; i < musicFiles.Length; i++)
             {
                 PlayList.Add(new Music(musicFiles[i]));
-
-                //теперь нужно каким-то образом задать песням название и определить их жанр
-                //скорее всего это всё будет делаться в настройках игры
-                //т.е. перед запуском игры, нужно будет просканировать директорию с музыкой
-                //затем отобразить список адресов песен
-                //и в ручную к каждом экземпляру добавить музыку и жанр
             }
-            //заполнение общего плэйлиста из директории
             CurrentMusic = NextMusic();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));

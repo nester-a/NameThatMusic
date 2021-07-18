@@ -41,12 +41,8 @@ namespace NameThatMusic.Model
         {
             get
             {
-                if(MusicPlayer != null)
+                if (MusicPlayer.IsActive && MusicPlayer.CurrentMusic != null)
                 {
-                    if (MusicPlayer.IsActive)
-                    {
-                        return false;
-                    }
                     return true;
                 }
                 return false;
@@ -84,8 +80,9 @@ namespace NameThatMusic.Model
         {
             RoundIsStoped = false;
             RoundIsStarted = true;
-            MusicPlayer.PlayMusic(RoundTime);
+            MusicPlayer.PlayMusic();
             TimeIsRunningOut();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("MusicPlayer"));
         }
         public void StopRound()
         {
@@ -96,6 +93,7 @@ namespace NameThatMusic.Model
             RoundTime = deffaultTime;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoundTime"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("MusicPlayer"));
         }
         public void ChangeRoundTime(int newRoundTime)
         {

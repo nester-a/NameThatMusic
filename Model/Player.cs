@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace NameThatMusic.Model
 {
-    class Player
+    class Player : INotifyPropertyChanged
     {
         public int Scores { get; private set; } = 0;
         public bool IsActive { get; private set; } = false;
@@ -42,6 +43,9 @@ namespace NameThatMusic.Model
         {
 
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public void ChangeActive()
         {
             if (!IsActive)
@@ -53,10 +57,14 @@ namespace NameThatMusic.Model
                 IsActive = false;
                 Scores = 0;
             }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsActive"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanAddPlayer"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanRemovePlayer"));
         }
         public void IncreaseScores()
         {
             Scores++;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Scores"));
         }
         public void ReduceScores()
         {
@@ -65,6 +73,7 @@ namespace NameThatMusic.Model
             {
                 Scores = 0;
             }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Scores"));
         }
 
         //не используется

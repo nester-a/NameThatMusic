@@ -30,7 +30,7 @@
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Случайное проигрывание" Margin="10,10,10,10"/>
-            <CheckBox Margin="10,12,10,10"/>
+            <CheckBox Margin="10,12,10,10" IsEnabled="False"/>
         </StackPanel>
     </Grid>
 </Window>

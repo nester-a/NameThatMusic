@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("questions.txt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("readme.txt")]
 
 
