@@ -21,7 +21,7 @@
         <!--меню-->
         <Menu Grid.Row="0" x:Name="menuMainMenu">
             <MenuItem Header="File"/>
-            <MenuItem Header="Options" Command="{Binding ClickMenuButtonOptions}"/>
+            <MenuItem Header="Options" Command="{Binding ClickMenuButtonOptions}" IsEnabled="{Binding CanChangeSettings}"/>
             <MenuItem Header="About"/>
         </Menu>
         <!--кнопки начать/закончить игру-->
@@ -76,16 +76,16 @@
             </StackPanel>
             <!---->
             <!--рисуем кнопки добавить игрока-->
-            <Button Grid.Row="2" Grid.Column="0" x:Name="btnAddFirstPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding Player1.CanAddPlayer}" Command="{Binding ClickPlayersOneButton}"/>
-            <Button Grid.Row="2" Grid.Column="1" x:Name="btnAddSecondPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding Player2.CanAddPlayer}" Command="{Binding ClickPlayersTwoButton}"/>
-            <Button Grid.Row="2" Grid.Column="2" x:Name="btnAddThirdPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding Player3.CanAddPlayer}" Command="{Binding ClickPlayersThreeButton}"/>
-            <Button Grid.Row="2" Grid.Column="3" x:Name="btnAddFourthPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding Player4.CanAddPlayer}" Command="{Binding ClickPlayersFourButton}"/>
+            <Button Grid.Row="2" Grid.Column="0" x:Name="btnAddFirstPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding CanAddPlayer1}" Command="{Binding ClickPlayers1Button}"/>
+            <Button Grid.Row="2" Grid.Column="1" x:Name="btnAddSecondPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding CanAddPlayer2}" Command="{Binding ClickPlayers2Button}"/>
+            <Button Grid.Row="2" Grid.Column="2" x:Name="btnAddThirdPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding CanAddPlayer3}" Command="{Binding ClickPlayers3Button}"/>
+            <Button Grid.Row="2" Grid.Column="3" x:Name="btnAddFourthPlayer" Content="Add player" Width="85" Height="25" IsEnabled="{Binding CanAddPlayer4}" Command="{Binding ClickPlayers4Button}"/>
             <!---->
             <!--рисуем кнопки убрать игрока-->
-            <Button Grid.Row="3" Grid.Column="0" x:Name="btnRemoveFirstPlayer" Content="Remove player" Width="85" Height="25" IsEnabled="{Binding Player1.CanRemovePlayer}" Command="{Binding ClickPlayersOneButton}"/>
-            <Button Grid.Row="3" Grid.Column="1" x:Name="btnRemoveSecondPlayer" Content="Remove player" Width="85" Height="25" IsEnabled="{Binding Player2.CanRemovePlayer}" Command="{Binding ClickPlayersTwoButton}"/>
-            <Button Grid.Row="3" Grid.Column="2" x:Name="btnRemoveThirdPlayer" Content="Remove player" Width="85" Height="25" IsEnabled="{Binding Player3.CanRemovePlayer}" Command="{Binding ClickPlayersThreeButton}"/>
-            <Button Grid.Row="3" Grid.Column="3" x:Name="btnRemoveFourthPlayer" Content="Remove player" Width="85" Height="25" IsEnabled="{Binding Player4.CanRemovePlayer}" Command="{Binding ClickPlayersFourButton}"/>
+            <Button Grid.Row="3" Grid.Column="0" x:Name="btnRemoveFirstPlayer" Content="Remove player" Width="85" Height="25" IsEnabled="{Binding CanRemovePlayer1}" Command="{Binding ClickPlayers1Button}"/>
+            <Button Grid.Row="3" Grid.Column="1" x:Name="btnRemoveSecondPlayer" Content="Remove player" Width="85" Height="25" IsEnabled="{Binding CanRemovePlayer2}" Command="{Binding ClickPlayers2Button}"/>
+            <Button Grid.Row="3" Grid.Column="2" x:Name="btnRemoveThirdPlayer" Content="Remove player" Width="85" Height="25" IsEnabled="{Binding CanRemovePlayer3}" Command="{Binding ClickPlayers3Button}"/>
+            <Button Grid.Row="3" Grid.Column="3" x:Name="btnRemoveFourthPlayer" Content="Remove player" Width="85" Height="25" IsEnabled="{Binding CanRemovePlayer4}" Command="{Binding ClickPlayers4Button}"/>
             <!---->
         </Grid>
         <!--музыкальный плеер-->
