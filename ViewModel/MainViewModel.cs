@@ -148,6 +148,52 @@ namespace NameThatMusic.ViewModel
         }
 
 
+        public string PW_Player1InGame
+        {
+            get
+            {
+                if (Player1.IsActive)
+                {
+                    return "In Game";
+                }
+                return string.Empty;
+            }
+        }
+        public string PW_Player2InGame
+        {
+            get
+            {
+                if (Player2.IsActive)
+                {
+                    return "In Game";
+                }
+                return string.Empty;
+            }
+        }
+        public string PW_Player3InGame
+        {
+            get
+            {
+                if (Player3.IsActive)
+                {
+                    return "In Game";
+                }
+                return string.Empty;
+            }
+        }
+        public string PW_Player4InGame
+        {
+            get
+            {
+                if (Player4.IsActive)
+                {
+                    return "In Game";
+                }
+                return string.Empty;
+            }
+        }
+
+
         public int SW_RoundTime { get; set; } = thisGame.RoundTime;
         public string SW_MusicFolder { get; set; }
 
