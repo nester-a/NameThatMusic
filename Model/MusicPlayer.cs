@@ -27,6 +27,7 @@ namespace NameThatMusic.Model
         public bool allMusicWasPlayed { get; private set; } = false;
         public bool IsActive { get; private set; } = false;
         public MediaPlayer musicPlayer { get; private set; } = new MediaPlayer();
+        public int PlayingTime { get; set; }
 
 
         public MusicPlayer()

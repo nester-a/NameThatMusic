@@ -116,7 +116,6 @@ namespace NameThatMusic.Model
                     if (stopSource.Token.IsCancellationRequested) return;
                     if (RoundTime <= 0)
                     {
-                        stopSource = new CancellationTokenSource();
                         StopRound();
                     }
                 }
