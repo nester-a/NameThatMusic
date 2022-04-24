@@ -11,16 +11,28 @@
         <vm:MainViewModel/>
     </Window.DataContext>
     <Grid>
-        <Grid x:Name="gGameFieldGrid" Grid.Row="1">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="gGameFieldGrid" Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/><!--первый игрок-->
-                <ColumnDefinition/><!--второй игрок-->
-                <ColumnDefinition/><!--третий игрок-->
-                <ColumnDefinition/><!--четвёртый игрок-->
+                <ColumnDefinition/>
+                <!--первый игрок-->
+                <ColumnDefinition/>
+                <!--второй игрок-->
+                <ColumnDefinition/>
+                <!--третий игрок-->
+                <ColumnDefinition/>
+                <!--четвёртый игрок-->
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition/><!--здесь будут аватарки игроков-->
-                <RowDefinition Height="150"/> <!--здесь будут очки игроков-->
+                <RowDefinition/>
+                <!--здесь будут аватарки игроков-->
+                <RowDefinition Height="50"/>
+                <!--рисуем активность игрока-->
+                <RowDefinition Height="50"/>
+                <!--здесь будут очки игроков-->
             </Grid.RowDefinitions>
             <!--рисуем аватарки игоков-->
             <StackPanel Grid.Row="0" Grid.Column="0" x:Name="spFirstPlayer" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Height="120" Background="DarkBlue"></StackPanel>
@@ -28,24 +40,42 @@
             <StackPanel Grid.Row="0" Grid.Column="2" x:Name="spThirdPlayer" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Height="120" Background="OrangeRed"></StackPanel>
             <StackPanel Grid.Row="0" Grid.Column="3" x:Name="spFourthPlayer" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Height="120" Background="Black"></StackPanel>
             <!---->
+            <!--рисуем активность игрока-->
+            <StackPanel Grid.Row="1" Grid.Column="0" x:Name="spFirstPlayerActive" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="{Binding PW_Player1InGame}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="1" x:Name="spSecondPlayerActive" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="{Binding PW_Player2InGame}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="2" x:Name="spThirdPlayerActive" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="{Binding PW_Player3InGame}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="3" x:Name="spFourthPlayerActive" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="{Binding PW_Player4InGame}"/>
+            </StackPanel>
             <!--рисуем очки-->
-            <StackPanel Grid.Row="1" Grid.Column="0" x:Name="spFirstPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <StackPanel Grid.Row="2" Grid.Column="0" x:Name="spFirstPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Label Content="Scores"/>
                 <TextBlock Text="{Binding Player1.Scores}" Margin="0,5"/>
             </StackPanel>
-            <StackPanel Grid.Row="1" Grid.Column="1" x:Name="spSecondPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <StackPanel Grid.Row="2" Grid.Column="1" x:Name="spSecondPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Label Content="Scores"/>
                 <TextBlock Text="{Binding Player2.Scores}" Margin="0,5"/>
             </StackPanel>
-            <StackPanel Grid.Row="1" Grid.Column="2" x:Name="spThirdPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <StackPanel Grid.Row="2" Grid.Column="2" x:Name="spThirdPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Label Content="Scores"/>
                 <TextBlock Text="{Binding Player3.Scores}" Margin="0,5"/>
             </StackPanel>
-            <StackPanel Grid.Row="1" Grid.Column="3" x:Name="spFourthPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <StackPanel Grid.Row="2" Grid.Column="3" x:Name="spFourthPlayerScores" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Label Content="Scores"/>
                 <TextBlock Text="{Binding Player4.Scores}" Margin="0,5"/>
             </StackPanel>
             <!---->
+        </Grid>
+        <Grid x:Name="gRoundTimeGrid" Grid.Row="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label x:Name="Timer" FontSize="50" Content="{Binding thisGame.RoundTime, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,0"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

@@ -83,6 +83,8 @@ namespace NameThatMusic.Model
             MusicPlayer.PlayMusic();
             TimeIsRunningOut();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("MusicPlayer"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoundTime"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
         }
         public void StopRound()
         {
@@ -114,7 +116,6 @@ namespace NameThatMusic.Model
                     if (stopSource.Token.IsCancellationRequested) return;
                     if (RoundTime <= 0)
                     {
-                        stopSource = new CancellationTokenSource();
                         StopRound();
                     }
                 }
@@ -131,6 +132,8 @@ namespace NameThatMusic.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsStarted"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanBeStarted"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanBeCanceled"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoundTime"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
         }
         public void EndGame()
         {
@@ -138,6 +141,8 @@ namespace NameThatMusic.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsStarted"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanBeStarted"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanBeCanceled"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RoundTime"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
         }
 
         //не используется

@@ -27,6 +27,7 @@ namespace NameThatMusic.Model
         public bool allMusicWasPlayed { get; private set; } = false;
         public bool IsActive { get; private set; } = false;
         public MediaPlayer musicPlayer { get; private set; } = new MediaPlayer();
+        public int PlayingTime { get; set; }
 
 
         public MusicPlayer()
@@ -44,6 +45,8 @@ namespace NameThatMusic.Model
                 musicPlayer.Open(new Uri(CurrentMusic.Path, UriKind.Absolute));
                 musicPlayer.Play();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsActive"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusic"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CurrentMusicName"));
             }
         }
         public void StopMusic()

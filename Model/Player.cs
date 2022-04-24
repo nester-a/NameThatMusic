@@ -39,12 +39,40 @@ namespace NameThatMusic.Model
                 }
             }
         }
+        public bool CanReduceScores
+        {
+            get
+            {
+                return IsActive && Scores > 0;
+            }
+        }
+        public string InGame
+        {
+            get
+            {
+                if (IsActive)
+                {
+                    return "Active";
+                }
+                return "Add player";
+            }
+        }
+        public string CantRemovePlayer
+        {
+            get
+            {
+                if (IsActive)
+                {
+                    return "Remove player";
+                }
+                return "Cant remove";
+            }
+        }
+
         public Player()
         {
 
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public void ChangeActive()
         {
@@ -60,11 +88,14 @@ namespace NameThatMusic.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsActive"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanAddPlayer"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanRemovePlayer"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CantRemovePlayer"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("InGame"));
         }
         public void IncreaseScores()
         {
             Scores++;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Scores"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanReduceScores"));
         }
         public void ReduceScores()
         {
@@ -74,7 +105,11 @@ namespace NameThatMusic.Model
                 Scores = 0;
             }
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Scores"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("CanReduceScores"));
         }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         //не используется
         //public string Name { get; private set; }
